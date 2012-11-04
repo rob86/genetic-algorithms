@@ -21,12 +21,12 @@ namespace GA.Core
             Double INF = Double.PositiveInfinity;
             Double[,] costMatrix = new Double[,]
             {
-                { INF,   2.0,    4.0,   22.0,    2.0,    0.0},
+                { INF,   2.0,    4.0,   22.0,    2.0,    INF},
                 { 2.0,   INF,    8.0,   15.0,   13.0,   10.0},
-                { 4.0,   8.0,    INF,    5.0,    2.0,    0.0},
+                { 4.0,   8.0,    INF,    5.0,    2.0,    INF},
                 {22.0,  15.0,    5.0,    INF,   11.0,   12.0},
                 { 2.0,  13.0,    2.0,   11.0,    INF,   14.0},
-                { 0.0,  10.0,    0.0,   12.0,   14.0,    INF},
+                { INF,  10.0,    INF,   12.0,   14.0,    INF},
             };
 
             // create prototype chromosome
@@ -61,7 +61,7 @@ namespace GA.Core
                 }
                 fitness = population.BestFitness.Evaluate();
             }
-            System.Console.WriteLine("Best fitness: " + fitness);
+            System.Console.WriteLine("Best fitness: " + 1.0 / fitness);
             System.Console.WriteLine(population.BestFitness.ToString());
             System.Console.ReadKey();
         }

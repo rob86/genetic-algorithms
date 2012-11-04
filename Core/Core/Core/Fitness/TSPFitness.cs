@@ -30,7 +30,8 @@ namespace GA.Core.Fitness
             {
                 cost += costMatrix[permutation[i - 1], permutation[i]];
             }
-            return cost;
+            cost += costMatrix[permutation[permutation.Length - 1], permutation[0]];
+            return 1.0 / cost;
         }
     }
 }

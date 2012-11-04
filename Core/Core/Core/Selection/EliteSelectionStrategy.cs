@@ -23,9 +23,9 @@ namespace GA.Core.Selection
         {
             Array.Sort(population, (IChromosome ch1, IChromosome ch2) => 
             {
-                if (ch1.Evaluate() > ch2.Evaluate())
+                if (ch1.Evaluate() < ch2.Evaluate())
                     return 1;
-                else if (ch1.Evaluate() < ch2.Evaluate())
+                else if (ch1.Evaluate() > ch2.Evaluate())
                     return -1;
                 else
                     return 0;
