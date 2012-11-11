@@ -45,17 +45,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chromosome\PermutationChromosome.cs" />
-    <Compile Include="Comparer\ReverseComparator.cs" />
+    <Compile Include="Comparer\AgeComparer.cs" />
+    <Compile Include="Comparer\FitnessComparer.cs" />
+    <Compile Include="Comparer\FitnessReverseComparer.cs" />
     <Compile Include="Population\Population.cs" />
     <Compile Include="Population\IPopulation.cs" />
-    <Compile Include="Selection\FitnessProportionateSelectionStrategy.cs" />
+    <Compile Include="Selection\Adapter\SurvivorSelectionStrategyAdapter.cs" />
+    <Compile Include="Selection\Ranking\ExponentialSelectionRanking.cs" />
+    <Compile Include="Selection\Ranking\LinearSelectionRanking.cs" />
+    <Compile Include="Selection\Ranking\ISelectionRanking.cs" />
+    <Compile Include="Selection\Ranking\NoSelectionRanking.cs" />
+    <Compile Include="Selection\RouletteWheelSelectionStrategy.cs" />
+    <Compile Include="Selection\StochasticUniversalSamplingStrategy.cs" />
     <Compile Include="Selection\NoSelectionStrategy.cs" />
     <Compile Include="Selection\TournamentSelectionStrategy.cs" />
     <Compile Include="Selection\Size\ProportionalSizeStrategy.cs" />
     <Compile Include="Selection\Size\ISelectionSizeStrategy.cs" />
     <Compile Include="Selection\Size\FixedSizeStrategy.cs" />
     <Compile Include="Selection\ISelectionStrategy.cs" />
-    <Compile Include="Selection\EliteSelectionStrategy.cs" />
+    <Compile Include="Selection\Adapter\EliteSelectionStrategyAdapter.cs" />
     <Compile Include="Fitness\TSPFitness.cs" />
     <Compile Include="Chromosome\IChromosome.cs" />
     <Compile Include="Fitness\IFitness.cs" />

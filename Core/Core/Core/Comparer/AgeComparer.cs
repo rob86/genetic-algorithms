@@ -7,17 +7,17 @@ using GA.Core.Chromosome;
 
 namespace GA.Core.Comparer
 {
-    public class ReverseComparator : IComparer<IChromosome>
+    public class AgeComparer : IComparer<IChromosome>
     {
         public Int32 Compare(IChromosome ch1, IChromosome ch2)
         {
-            if (ch1.Evaluate() < ch2.Evaluate())
-            {
-                return 1;
-            }
-            else if (ch1.Evaluate() > ch2.Evaluate())
+            if (ch1.Age < ch2.Age)
             {
                 return -1;
+            }
+            else if (ch1.Age > ch2.Age)
+            {
+                return 1;
             }
             return 0;
         }

@@ -14,31 +14,34 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
-    public class FitnessProportionateSelectionStrategy : ISelectionStrategy
+    public class StochasticUniversalSamplingStrategy : ISelectionStrategy
     {
         private IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
-        private ISelectionSizeStrategy Size
+        private ISelectionSizeStrategy PopulationSize
         {
             get;
             set;
         }
-        public FitnessProportionateSelectionStrategy(ISelectionSizeStrategy size, IRandomGenerator randomGenerator)
+        public StochasticUniversalSamplingStrategy(ISelectionSizeStrategy populationSize, IRandomGenerator randomGenerator)
         {
-            Size = size;
+            PopulationSize = populationSize;
             RandomGenerator = randomGenerator;
         }
         public IChromosome[] Select(IChromosome[] population)
         {
-            // Stochastic universal sampling
+            if (population.Length < 2)
+            {
+                return population;
+            }
 
             IChromosome[] subpopulation = population.Where(ch => ch.Evaluate() > 0).ToArray();
-            Double totalFitness = subpopulation.Sum(ch => 1.0 / ch.Evaluate());
+            Double totalFitness = subpopulation.Sum(ch => ch.Evaluate());
 
-            Int32 newPopulationSize = (Int32)Size.ComputeSize(subpopulation);
+            Int32 newPopulationSize = (Int32)PopulationSize.ComputeSize(subpopulation);
             IChromosome[] result = new IChromosome[newPopulationSize];
 
             Double ptrstep = 1.0 / newPopulationSize;
@@ -48,8 +51,7 @@ namespace GA.Core.Selection
             Double sum = 0.0;
             for (Int32 i = 0; i < subpopulation.Length; i++)
             {
-                Double fitness = 1.0 / subpopulation[i].Evaluate();
-                for (sum += fitness / totalFitness; sum > ptr; ptr += ptrstep)
+                for (sum += subpopulation[i].Evaluate() / totalFitness; sum > ptr; ptr += ptrstep)
                 {
                     result[pos++] = subpopulation[i];
 

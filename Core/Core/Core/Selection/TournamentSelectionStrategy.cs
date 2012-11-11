@@ -13,16 +13,28 @@ namespace GA.Core.Selection
 {
     public class TournamentSelectionStrategy : ISelectionStrategy
     {
-        private IComparer<IChromosome> comparer = new ReverseComparator();
+        private IComparer<IChromosome> comparer = new FitnessReverseComparer();
 
-        private ISelectionSizeStrategy TournamentGroupSize
+        private IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
-        public TournamentSelectionStrategy(ISelectionSizeStrategy tournamentGroupSize)
+        private ISelectionSizeStrategy TournamentSize
         {
-            TournamentGroupSize = tournamentGroupSize;
+            get;
+            set;
+        }
+        private ISelectionSizeStrategy PopulationSize
+        {
+            get;
+            set;
+        }
+        public TournamentSelectionStrategy(ISelectionSizeStrategy populationSize, ISelectionSizeStrategy tournamentSize, IRandomGenerator randomGenerator)
+        {
+            TournamentSize = tournamentSize;
+            PopulationSize = populationSize;
+            RandomGenerator = randomGenerator;
         }
         public IChromosome[] Select(IChromosome[] population)
         {
@@ -31,19 +43,20 @@ namespace GA.Core.Selection
                 return population;
             }
 
-            UInt32 size = TournamentGroupSize.ComputeSize(population);
+            UInt32 tournamenSize = TournamentSize.ComputeSize(population);
+            UInt32 populationSize = PopulationSize.ComputeSize(population);
 
-            var leaders = Enumerable.Range(0, population.Length - 1).Where(i => i % size == 0).ToArray();
-
-            IChromosome[] result = new IChromosome[(population.Length / size)];
-            Parallel.For(0, leaders.Length - 1, i =>
+            IChromosome[] result = new IChromosome[populationSize];
+            Parallel.For(0, populationSize, i =>
                 {
-                    Array.Sort(population, leaders[i], (Int32)size, comparer);
-                    result[i] = population[leaders[i]];
+                    IChromosome[] group = new IChromosome[tournamenSize];
+                    for (Int32 j = 0; j < tournamenSize; ++j)
+                    {
+                        group[j] = population[RandomGenerator.Next(0, population.Length)];
+                    }
+                    Array.Sort(group, comparer);
+                    result[i] = group.First();
                 });
-
-            Array.Sort(population, leaders.Last(), population.Length - leaders.Last(), comparer);
-            result[result.Length - 1] = population[leaders.Last()];
 
             return result;
         }

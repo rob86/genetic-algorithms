@@ -46,10 +46,8 @@ namespace GA.Core
             DefaultPopulation population = new DefaultPopulation(prototype, 40);
 
             // set population's parameters
-            population.ParentSelectionStrategy 
-                = new FitnessProportionateSelectionStrategy(new FixedSizeStrategy(40), new ThreadSafeRandomGenerator());
-            population.SurvivorSelectionStrategy
-                = new NoSelectionStrategy();
+            population.SelectionStrategy
+                = new StochasticUniversalSamplingStrategy(new FixedSizeStrategy(40), new ThreadSafeRandomGenerator());
             population.RandomGenerator = new ThreadSafeRandomGenerator();
             population.StopCondition = stopCondition;
 

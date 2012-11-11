@@ -19,12 +19,7 @@ namespace GA.Core.Population
             get;
             set;
         }
-        public ISelectionStrategy ParentSelectionStrategy
-        {
-            get;
-            set;
-        }
-        public ISelectionStrategy SurvivorSelectionStrategy
+        public ISelectionStrategy SelectionStrategy
         {
             get;
             set;
@@ -66,7 +61,7 @@ namespace GA.Core.Population
             ArrayAlgorithm.Shuffle(Specimens, RandomGenerator);
 
             // select parents
-            Specimens = ParentSelectionStrategy.Select(Specimens);
+            Specimens = SelectionStrategy.Select(Specimens);
 
             if (Specimens.Length == 0)
             {
@@ -93,14 +88,6 @@ namespace GA.Core.Population
                     offspring[i + 0].Mutate();
                     offspring[i + 1].Mutate();             
                 });
-
-            // select survivors
-            Specimens = SurvivorSelectionStrategy.Select(Specimens.Concat(offspring).ToArray());
-
-            if (Specimens.Length == 0)
-            {
-                return false;
-            }
 
             // new population
             Parallel.ForEach(Specimens, specimen =>

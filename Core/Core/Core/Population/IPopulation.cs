@@ -12,9 +12,7 @@ namespace GA.Core.Population
 {
     public interface IPopulation
     {
-        ISelectionStrategy ParentSelectionStrategy { get; set; }
-        ISelectionStrategy SurvivorSelectionStrategy { get; set; }
-
+        ISelectionStrategy SelectionStrategy { get; set; }
         IStopCondition StopCondition { get; set; }
 
         UInt32 Generation { get; }

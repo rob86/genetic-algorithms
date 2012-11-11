@@ -31,7 +31,7 @@ namespace GA.Core.Fitness
                 cost += costMatrix[permutation[i - 1], permutation[i]];
             }
             cost += costMatrix[permutation[permutation.Length - 1], permutation[0]];
-            return 1.0 / cost;
+            return Double.IsInfinity(cost) ? 0.0 : 1.0 / cost;
         }
     }
 }
