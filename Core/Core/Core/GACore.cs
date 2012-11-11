@@ -9,6 +9,7 @@ using GA.Core.Util;
 using GA.Core.Population;
 using GA.Core.Selection;
 using GA.Core.Fitness;
+using GA.Core.Stop;
 
 namespace GA.Core
 {
@@ -30,7 +31,7 @@ namespace GA.Core
             };
 
             // create prototype chromosome
-            PermutationChromosome prototype = new PermutationChromosome(0, costMatrix.GetLength(0));
+            PermutationChromosome prototype = new PermutationChromosome(0, costMatrix.GetLength(0) - 1);
 
             // set prototype's parameters
             prototype.CrossOverStrategy = new PermutationChromosome.CycleCrossOverStrategy();
@@ -38,31 +39,27 @@ namespace GA.Core
             prototype.MutationStrategy = new PermutationChromosome.InsertMutationStrategy();
             prototype.Fitness = new TSPFitness(costMatrix);
 
+            // stop condition, keep reference for selecting the leader
+            NoChangeStopCondion stopCondition = new NoChangeStopCondion(10);
+
             // create population
-            DefaultPopulation population = new DefaultPopulation(prototype, 30);
+            DefaultPopulation population = new DefaultPopulation(prototype, 40);
 
             // set population's parameters
-            population.SelectionStrategy = new EliteSelectionStrategy(new ProportionalSizeStrategy(0.4));
+            population.ParentSelectionStrategy 
+                = new FitnessProportionateSelectionStrategy(new FixedSizeStrategy(40), new ThreadSafeRandomGenerator());
+            population.SurvivorSelectionStrategy
+                = new NoSelectionStrategy();
             population.RandomGenerator = new ThreadSafeRandomGenerator();
+            population.StopCondition = stopCondition;
 
-            Double fitness = Double.MinValue;
-            Int32 fitnessRepeats = 0;
-            while (fitnessRepeats < 100)
-            {
-                population.NextGeneration();
+            // perform util the stop condition returns false
+            while (population.NextGeneration())
+                ;
 
-                if (Math.Abs(fitness - population.BestFitness.Evaluate()) < 0.01)
-                {
-                    ++fitnessRepeats;
-                }
-                else
-                {
-                    fitnessRepeats = 0;
-                }
-                fitness = population.BestFitness.Evaluate();
-            }
-            System.Console.WriteLine("Best fitness: " + 1.0 / fitness);
-            System.Console.WriteLine(population.BestFitness.ToString());
+            // print the result
+            System.Console.WriteLine("Best fitness: " + (1.0 / stopCondition.Leader.Evaluate()));
+            System.Console.WriteLine(stopCondition.Leader.ToString());
             System.Console.ReadKey();
         }
     }

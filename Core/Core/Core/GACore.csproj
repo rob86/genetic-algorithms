@@ -45,8 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chromosome\PermutationChromosome.cs" />
+    <Compile Include="Comparer\ReverseComparator.cs" />
     <Compile Include="Population\Population.cs" />
     <Compile Include="Population\IPopulation.cs" />
+    <Compile Include="Selection\FitnessProportionateSelectionStrategy.cs" />
+    <Compile Include="Selection\NoSelectionStrategy.cs" />
+    <Compile Include="Selection\TournamentSelectionStrategy.cs" />
     <Compile Include="Selection\Size\ProportionalSizeStrategy.cs" />
     <Compile Include="Selection\Size\ISelectionSizeStrategy.cs" />
     <Compile Include="Selection\Size\FixedSizeStrategy.cs" />
@@ -57,7 +61,10 @@
     <Compile Include="Fitness\IFitness.cs" />
     <Compile Include="GACore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stop\NoChangeStopCondion.cs" />
+    <Compile Include="Stop\IStopCondition.cs" />
     <Compile Include="Util\IRandomGenerator.cs" />
+    <Compile Include="Util\ArrayAlgorithm.cs" />
     <Compile Include="Util\ThreadSafeRandomGenerator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

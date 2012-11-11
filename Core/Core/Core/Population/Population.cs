@@ -2,25 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 using GA.Core.Chromosome;
 using GA.Core.Fitness;
 using GA.Core.Selection;
 using GA.Core.Util;
+using GA.Core.Stop;
 
 namespace GA.Core.Population
 {
     public class DefaultPopulation : IPopulation
     {
-        [Required]
         public IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
-        [Required]
-        public ISelectionStrategy SelectionStrategy
+        public ISelectionStrategy ParentSelectionStrategy
+        {
+            get;
+            set;
+        }
+        public ISelectionStrategy SurvivorSelectionStrategy
+        {
+            get;
+            set;
+        }
+        public IStopCondition StopCondition
         {
             get;
             set;
@@ -30,12 +39,6 @@ namespace GA.Core.Population
             get;
             private set;
         }
-        public IChromosome BestFitness
-        {
-            get;
-            private set;
-        }
-        [Required]
         public IChromosome[] Specimens
         {
             get;
@@ -52,42 +55,62 @@ namespace GA.Core.Population
                 Specimens[i] = chromosome;
             }
         }
-        public void NextGeneration()
+        public Boolean NextGeneration()
         {
-            // select
-            Specimens = SelectionStrategy.Select(Specimens);
-            BestFitness = Specimens[0];
-
-            // shuffle
-            for (Int32 i = 0; i < Specimens.Length; ++i)
+            if (StopCondition.ShouldContinue(Specimens) == false)
             {
-                IChromosome value = Specimens[i];
-                Int32 point = RandomGenerator.Next(i, Specimens.Length);
-                Specimens[i] = Specimens[point];
-                Specimens[point] = value;
+                return false;
             }
+
+            // shuffle before selection
+            ArrayAlgorithm.Shuffle(Specimens, RandomGenerator);
+
+            // select parents
+            Specimens = ParentSelectionStrategy.Select(Specimens);
+
+            if (Specimens.Length == 0)
+            {
+                return false;
+            }
+
+            // shuffle before mating
+            ArrayAlgorithm.Shuffle(Specimens, RandomGenerator);
 
             // crossover & mutate
 
             IChromosome[] offspring = new IChromosome[(Int32)(Specimens.Length / 2) * 2];
-            for (Int32 i = 0; i < Specimens.Length - 1; i += 2)
-            {
-                // crossover
-                offspring[i + 0] = Specimens[i + 0].Clone();
-                offspring[i + 1] = Specimens[i + 1].Clone();
 
-                offspring[i + 0].CrossOver(offspring[i + 1]);
-                
-                // mutate
-                offspring[i + 0].Mutate();
-                offspring[i + 1].Mutate();
+            var evens = Enumerable.Range(0, Specimens.Length - 1).Where(i => i % 2 != 1);
+            Parallel.ForEach(evens, i =>
+                {
+                    // crossover
+                    offspring[i + 0] = Specimens[i + 0].Clone();
+                    offspring[i + 1] = Specimens[i + 1].Clone();
+
+                    offspring[i + 0].CrossOver(offspring[i + 1]);
+
+                    // mutate
+                    offspring[i + 0].Mutate();
+                    offspring[i + 1].Mutate();             
+                });
+
+            // select survivors
+            Specimens = SurvivorSelectionStrategy.Select(Specimens.Concat(offspring).ToArray());
+
+            if (Specimens.Length == 0)
+            {
+                return false;
             }
 
             // new population
-            Specimens = (IChromosome[])Specimens.Concat(offspring).ToArray();
+            Parallel.ForEach(Specimens, specimen =>
+                {
+                    specimen.IncrementAge();
+                });
 
             ++Generation;
-        }
 
+            return true;
+        }
     }
 }

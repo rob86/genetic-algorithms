@@ -19,5 +19,8 @@ namespace GA.Core.Chromosome
         Double Evaluate();
 
         String ToString();
+
+        void IncrementAge();
+        Int32 Age { get; }
     }
 }

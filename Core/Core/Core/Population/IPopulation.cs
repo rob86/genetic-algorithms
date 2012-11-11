@@ -5,17 +5,20 @@ using System.Text;
 
 using GA.Core.Chromosome;
 using GA.Core.Selection;
+using GA.Core.Stop;
+
 
 namespace GA.Core.Population
 {
     public interface IPopulation
     {
-        ISelectionStrategy SelectionStrategy { get; set; }
+        ISelectionStrategy ParentSelectionStrategy { get; set; }
+        ISelectionStrategy SurvivorSelectionStrategy { get; set; }
 
-        IChromosome BestFitness { get; }
+        IStopCondition StopCondition { get; set; }
 
         UInt32 Generation { get; }
-        void NextGeneration();
+        Boolean NextGeneration();
 
         IChromosome[] Specimens { get; }
     }

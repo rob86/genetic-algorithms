@@ -5,11 +5,15 @@ using System.Text;
 
 using GA.Core.Fitness;
 using GA.Core.Chromosome;
+using GA.Core.Util;
+using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
     public class EliteSelectionStrategy : ISelectionStrategy
     {
+        private IComparer<IChromosome> comparer = new ReverseComparator();
+
         private ISelectionSizeStrategy Size
         {
             get;
@@ -21,15 +25,7 @@ namespace GA.Core.Selection
         }
         public IChromosome[] Select(IChromosome[] population)
         {
-            Array.Sort(population, (IChromosome ch1, IChromosome ch2) => 
-            {
-                if (ch1.Evaluate() < ch2.Evaluate())
-                    return 1;
-                else if (ch1.Evaluate() > ch2.Evaluate())
-                    return -1;
-                else
-                    return 0;
-            });
+            ArrayAlgorithm.ParallelQuickSort(population, comparer);
             return (IChromosome[])population.Take((Int32)Size.ComputeSize(population)).ToArray();
         }
     }

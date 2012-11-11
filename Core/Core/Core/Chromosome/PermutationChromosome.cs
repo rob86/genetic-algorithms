@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using System.ComponentModel.DataAnnotations;
 
 using GA.Core.Fitness;
 using GA.Core.Util;
@@ -314,25 +313,21 @@ namespace GA.Core.Chromosome
         }
         #endregion
 
-        [Required]
         public IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
-        [Required]
         public IMutationStrategy MutationStrategy
         {
             get;
             set;
         }
-        [Required]
         public ICrossOverStrategy CrossOverStrategy
         {
             get;
             set;
         }
-        [Required]
         public IFitness Fitness
         {
             get;
@@ -343,8 +338,12 @@ namespace GA.Core.Chromosome
             get;
             set;
         }
-        [Required]
         public Int32[] Data
+        {
+            get;
+            private set;
+        }
+        public Int32 Age
         {
             get;
             private set;
@@ -353,6 +352,7 @@ namespace GA.Core.Chromosome
         {
             Debug.Assert(data.Length > 3);
 
+            Age = 0;
             Evaluation = Double.NaN;
             Data = (Int32[])data.Clone();
         }
@@ -361,10 +361,11 @@ namespace GA.Core.Chromosome
             Debug.Assert(maxValue > minValue);
             Debug.Assert(maxValue - minValue > 3);
 
+            Age = 0;
             Evaluation = Double.NaN;
-            Data = new Int32[maxValue - minValue];
+            Data = new Int32[maxValue - minValue + 1];
 
-            for (Int32 i = minValue; i < maxValue; ++i)
+            for (Int32 i = minValue; i <= maxValue; ++i)
             {
                 Data[i - minValue] = i;
             }
@@ -417,6 +418,10 @@ namespace GA.Core.Chromosome
                 builder.Append("\t");
             }
             return builder.ToString();
+        }
+        public void IncrementAge()
+        {
+            ++Age;
         }
         private bool HasSameData(PermutationChromosome chromosome)
         {
