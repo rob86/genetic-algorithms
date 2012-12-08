@@ -14,9 +14,13 @@ namespace GA.Core.Chromosome
 
         #region MutationStrategy
 
+        /// <summary>
+        /// Mutacja
+        /// </summary>
         public interface IMutationStrategy
         {
             void Mutate(PermutationChromosome chromosome);
+            string GetName();
         }
         public class SwapMutationStrategy : IMutationStrategy
         {
@@ -31,6 +35,10 @@ namespace GA.Core.Chromosome
                     chromosome.Data[mutationPoint1] = chromosome.Data[mutationPoint2];
                     chromosome.Data[mutationPoint2] = mutationValue;
                 }
+            }
+            public string GetName()
+            {
+                return "SwapMutationStrategy";
             }
         }
         public class InsertMutationStrategy : IMutationStrategy
@@ -57,6 +65,10 @@ namespace GA.Core.Chromosome
                     chromosome.Data[mpLower + 1] = mutationValueUpper;
                 }
             }
+            public string GetName()
+            {
+                return "InsertMutationStrategy";
+            }
         }
         public class InverseMutationStrategy : IMutationStrategy
         {
@@ -72,6 +84,10 @@ namespace GA.Core.Chromosome
 
                     Array.Reverse(chromosome.Data, mpLower, mpUpper - mpLower);
                 }
+            }
+            public string GetName()
+            {
+                return "InverseMutationStrategy";
             }
         }
         public class ScrambleMutationStrategy : IMutationStrategy
@@ -95,12 +111,18 @@ namespace GA.Core.Chromosome
                     }
                 }
             }
+            public string GetName()
+            {
+                return "ScrambleMutationStrategy";
+            }
         }
 
         #endregion
 
         #region CrossOverStrategy
-
+        /// <summary>
+        /// Operacjie krzyzowania
+        /// </summary>
         public interface ICrossOverStrategy
         {
             void CrossOver(PermutationChromosome ch1, PermutationChromosome ch2);
@@ -311,6 +333,7 @@ namespace GA.Core.Chromosome
                 ch2.Data = child2;
             }
         }
+
         #endregion
 
         public IRandomGenerator RandomGenerator

@@ -20,7 +20,7 @@ namespace GA.Core
             // define cost matrix
 
             Double INF = Double.PositiveInfinity;
-            Double[,] costMatrix = new Double[,]
+           /* Double[,] costMatrix = new Double[,]
             {
                 { INF,   2.0,    4.0,   22.0,    2.0,    INF},
                 { 2.0,   INF,    8.0,   15.0,   13.0,   10.0},
@@ -29,7 +29,22 @@ namespace GA.Core
                 { 2.0,  13.0,    2.0,   11.0,    INF,   14.0},
                 { INF,  10.0,    INF,   12.0,   14.0,    INF},
             };
-
+            */
+            Double[,] costMatrix = new Double[,]
+            {
+                { INF,   2.0,    INF,   INF,    7.0},
+                { 2.0,   INF,    1.0,   3.0,   INF},
+                { INF,   1.0,    INF,    1.0,    5.0},
+                { INF,  3.0,    1.0,    INF,   INF},
+                { 7.0,  INF,    5.0,   INF,    INF},
+            };
+            costMatrix = new Double[,]
+            {
+                { INF,   20.0,  INF,  70.0},
+                { 20.0,   INF,    40.0,  INF},
+                { INF,   40.0,    INF,50.0},
+                { 70.0, INF,    50.0,INF},
+            };
             // create prototype chromosome
             PermutationChromosome prototype = new PermutationChromosome(0, costMatrix.GetLength(0) - 1);
 

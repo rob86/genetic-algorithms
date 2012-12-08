@@ -8,6 +8,9 @@ using GA.Core.Fitness;
 
 namespace GA.Core.Selection
 {
+    /// <summary>
+    /// selekcja
+    /// </summary>
     public interface ISelectionStrategy
     {
         IChromosome[] Select(IChromosome[] population);
