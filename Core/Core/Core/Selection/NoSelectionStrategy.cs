@@ -10,6 +10,9 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Brak selekcji.
+	 */
     public class NoSelectionStrategy : ISelectionStrategy
     {
         public IChromosome[] Select(IChromosome[] population)

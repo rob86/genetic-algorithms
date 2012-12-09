@@ -11,20 +11,32 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Selekcja turniejowa.
+	 */
     public class TournamentSelectionStrategy : ISelectionStrategy
     {
         private IComparer<IChromosome> comparer = new FitnessReverseComparer();
 
+		/*
+		 * Generator liczb losowych.
+		 */
         private IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
+		/*
+		 * Liczba osobników wchodzących do pojedynczego turnieju.
+		 */
         private ISelectionSizeStrategy TournamentSize
         {
             get;
             set;
         }
+		/*
+		 * Rozmiar populacji po selekcji.
+		 */
         private ISelectionSizeStrategy PopulationSize
         {
             get;

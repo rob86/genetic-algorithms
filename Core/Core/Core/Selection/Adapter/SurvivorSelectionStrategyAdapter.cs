@@ -10,15 +10,24 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Modyficator selekcji, który usuwa z populacji osobniki przebywające w niej dłużej niż określona liczba iteracji.
+	 */
     public class SurvivorSelectionStrategyAdapter : ISelectionStrategy
     {
         private IComparer<IChromosome> comparer = new AgeComparer();
 
+		/*
+		 * Rozmiar grupy, która przetrwa.
+		 */
         private ISelectionSizeStrategy SurvivorsSize
         {
             get;
             set;
         }
+		/*
+		 * Modyfikowana strategia selekcji.
+		 */
         private ISelectionStrategy AdaptedStrategy
         {
             get;

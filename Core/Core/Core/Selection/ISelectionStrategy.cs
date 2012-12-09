@@ -9,7 +9,7 @@ using GA.Core.Fitness;
 namespace GA.Core.Selection
 {
     /// <summary>
-    /// selekcja
+    /// Selekcja
     /// </summary>
     public interface ISelectionStrategy
     {

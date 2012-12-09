@@ -7,16 +7,28 @@ using GA.Core.Chromosome;
 
 namespace GA.Core.Stop
 {
+	/*
+	 * Warunek stopu, który kontynuje wykonywanie do momentu, gdy najlepiej dopasowany osobnik nie będzie się zmieniać przez określoną liczbę iteracji.
+	 */
     public class NoChangeStopCondion : IStopCondition
     {
+		/*
+		 * Najlepiej dopasowany osobnik w populacji.
+		 */
         public IChromosome Leader
         {
             get;
             private set;
         }
 
+		/*
+		 * Wymagana liczba powtórzeń najlepszego osobnika, aby ShouldContinue zwróciło false.
+		 */
         private UInt32 maxNumberOfRepeats;
 
+		/*
+		 * Dotychczasowa liczba powtórzeń.
+		 */
         private UInt32 numberOfRepeats = 0;
 
         public NoChangeStopCondion(UInt32 maxNumberOfRepeats)

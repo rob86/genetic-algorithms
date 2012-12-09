@@ -7,6 +7,9 @@ using GA.Core.Chromosome;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Brak rankingu osobników.
+	 */
     public class NoSelectionRanking : ISelectionRanking
     {
         private IChromosome[] Population

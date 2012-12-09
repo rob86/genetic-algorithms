@@ -8,6 +8,9 @@ using GA.Core.Chromosome;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Wynaczanie proporcjonalengo rozmiaru grupy/populacji, np. 40% dotychczasowego rozmiaru grupy/populacji.
+	 */
     public class ProportionalSizeStrategy : ISelectionSizeStrategy
     {
         [Range(0.0, 1.0)]

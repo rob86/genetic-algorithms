@@ -10,15 +10,24 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Modyficator selekcji, który gwarantuje, że określona liczba najlepiej dopasowanych osobników przejdzie do następnej iteracji.
+	 */
     public class EliteSelectionStrategyAdapter : ISelectionStrategy
     {
         private IComparer<IChromosome> comparer = new FitnessReverseComparer();
 
+		/*
+		 * Rozmiar grupy najlepiej dopasowanych osobników.
+		 */
         private ISelectionSizeStrategy EliteSize
         {
             get;
             set;
         }
+		/*
+		 * Modyfikowana strategia selekcji.
+		 */
         private ISelectionStrategy AdaptedStrategy
         {
             get;

@@ -14,13 +14,22 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Selekcja ruletkowa.
+	 */
     public class RouletteWheelSelectionStrategy : ISelectionStrategy
     {
+		/*
+		 * Generator liczb losowych.
+		 */
         private IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
+		/*
+		 * Rozmiar populacji po selekcji.
+		 */
         private ISelectionSizeStrategy PopulationSize
         {
             get;

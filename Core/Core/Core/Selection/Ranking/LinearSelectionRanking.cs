@@ -10,6 +10,9 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
+    /*
+	 * Liniowy ranking osobników.
+	 */
     public class LinearSelectionRanking : ISelectionRanking
     {
         private IComparer<IChromosome> comparer = new FitnessComparer();

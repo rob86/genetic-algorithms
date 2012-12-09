@@ -7,6 +7,9 @@ using GA.Core.Chromosome;
 
 namespace GA.Core.Selection
 {
+	/*
+	 * Stały rozmiar grupy/populacji.
+	 */
     public class FixedSizeStrategy : ISelectionSizeStrategy
     {
         private UInt32 Size
