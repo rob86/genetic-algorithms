@@ -14,6 +14,8 @@ using GA.Core.Selection;
 using GA.Core.Fitness;
 using GA.Core.Stop;
 
+using System.IO;
+
 namespace GAgui
 {
     public partial class Form1 : Form
@@ -85,6 +87,11 @@ namespace GAgui
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (costMatrix == null)
+            {
+                MessageBox.Show("Macierz jest pusta. Uzupełnij graf.");
+                return;
+            }
             RozmiarPopulacji = UInt32.Parse(textBox_RozmiarPopulacji.Text);
             prototype = new PermutationChromosome(0, costMatrix.GetLength(0) - 1);
             //wybor strategi mutacji
@@ -167,7 +174,7 @@ namespace GAgui
             {
                 while (population.NextGeneration()) ;
                 textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
-                textBox1.AppendText(stopCondition.Leader.ToString());
+                textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
             }
         }
 
@@ -181,6 +188,7 @@ namespace GAgui
             Double d1;
             string s1 = String.Empty;
             string s2 = String.Empty;
+            listBox_wezly.Items.Clear();
             for (int i = 0; i < dane.GetLength(0) ; i++)
             {
                 for (int j = 0; j < dane.GetLength(1); j++)
@@ -190,13 +198,101 @@ namespace GAgui
                         s2 = "INF";
                     else
                         s2 = d1.ToString();
-                    s1 = s1 + "; " + s2;
+
+                    if (String.IsNullOrEmpty(s1))
+                    {
+                        s1 = s1 + s2;
+                    }
+                    else
+                    {
+                        s1 = s1 + "; " + s2;
+                    }
                 }
                 listBox_wezly.Items.Add(s1);
                 s1 = String.Empty;
             }
         }
+        private void SaveToFile(Double[,] dane, string sciezka)
+        {
+            Double d1;
+            string s1 = String.Empty;
+            string s2 = String.Empty;
+            StreamWriter sw = new StreamWriter(sciezka);
 
+            for (int i = 0; i < dane.GetLength(0); i++)
+            {
+                for (int j = 0; j < dane.GetLength(1); j++)
+                {
+                    d1 = dane[i, j];
+                    if (d1 == Double.PositiveInfinity)
+                        s2 = "INF";
+                    else
+                        s2 = d1.ToString();
+                    if (String.IsNullOrEmpty(s1))
+                    {
+                        s1 = s1 + s2;
+                    }
+                    else
+                    {
+                        s1 = s1 + "; " + s2;
+                    }                    
+                }
+                sw.WriteLine(s1);
+                s1 = String.Empty;
+            }
+            sw.Close();
+        }
+        private void OpenFileAndCreateMatrix(string sciezka)
+        {
+            Double d1;
+            string s1 = String.Empty;
+            string s2 = String.Empty;
+            Double INF = Double.PositiveInfinity;
+            Double[,] Matrix = null;
+            int j = 0;
+            int i = 0;
+            int MaxMatrix = 0;
+            try
+            {
+                using (StreamReader sr = new StreamReader(sciezka))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        s1 = line;
+                        string[] sx = s1.Split(';');
+                        if(Matrix==null)
+                        {
+                            Matrix = new Double[sx.Length,sx.Length];
+                            MaxMatrix = sx.Length;
+                        }
+                        for (int k = 0; k < MaxMatrix; k++)
+                        {
+                            s2 = sx[k];
+                            s2 = s2.Trim();
+                            if(s2.Equals("INF"))
+                            {
+                                Matrix[i,k] = INF;
+                            }else
+                            {
+                                Matrix[i, k] = Convert.ToDouble(s2);
+                            }
+                        }
+                        i++;
+                    }
+                    sr.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            costMatrix = null;
+            costMatrix = Matrix;
+            InsetyList(costMatrix);
+            
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             if (listBox_wezly.SelectedItem != null)
@@ -213,12 +309,32 @@ namespace GAgui
 
         private void button4_Click(object sender, EventArgs e)
         {
-
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            DialogResult result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK) // Test result.
+            {
+                OpenFileAndCreateMatrix(openFileDialog1.FileName);
+            }
         }
 
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            //DialogResult result = openFileDialog1.ShowDialog();
+            DialogResult result = saveFileDialog1.ShowDialog();
+            if (result == DialogResult.OK) // Test result.
+            {
+                SaveToFile(costMatrix, saveFileDialog1.FileName);
+            }
+            
         }
     }
 }
