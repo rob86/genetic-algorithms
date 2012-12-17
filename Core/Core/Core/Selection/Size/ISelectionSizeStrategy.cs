@@ -7,11 +7,16 @@ using GA.Core.Chromosome;
 
 namespace GA.Core.Selection
 {
-	/*
-	 * Strategia wyznaczania rozmiaru grupy lub populacji.
-	 */
+	/// <summary>
+	/// Interfejs algorytmu wyznaczania rozmiaru grupy/populacji.
+	/// </summary>
     public interface ISelectionSizeStrategy
     {
+        /// <summary>
+        /// Wyznacza nowy rozmiar grupy/populacji na podstawie jej bieżących cech.
+        /// </summary>
+        /// <param name="population">Populacja, dla której ma byc wyznaczony nowy rozmiar.</param>
+        /// <returns>Nowy rozmiar populacji.</returns>
         UInt32 ComputeSize(IChromosome[] population);
     }
 }

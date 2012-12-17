@@ -12,33 +12,61 @@ using GA.Core.Stop;
 
 namespace GA.Core.Population
 {
+    /// <summary>
+    /// Domyślna implementacja interfejsu populacji.
+    /// </summary>
     public class DefaultPopulation : IPopulation
     {
+        /// <summary>
+        /// Wykorzystywany generator liczb losowych.
+        /// </summary>
         public IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Algorytm selekcji dla populacji.
+        /// </summary>
         public ISelectionStrategy SelectionStrategy
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Algorytm warunku stopu.
+        /// </summary>
         public IStopCondition StopCondition
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Aktualny wiek populacji.
+        /// </summary>
         public UInt32 Generation
         {
             get;
             private set;
         }
+
+        /// <summary>
+        /// Osobniki populacji.
+        /// </summary>
         public IChromosome[] Specimens
         {
             get;
             private set;
         }
+
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="prototype">Osobnik-wzorzec, który będzie kopiowany na potrzeby utworzenia populacji.</param>
+        /// <param name="initialSize">Początkowy rozmiar populacji.</param>
         public DefaultPopulation(IChromosome prototype, UInt32 initialSize)
         {
             Generation = 0;
@@ -50,6 +78,11 @@ namespace GA.Core.Population
                 Specimens[i] = chromosome;
             }
         }
+
+        /// <summary>
+        /// Realizuje pojedynczą iterację algorytmu genetycznego.
+        /// </summary>
+        /// <returns>True, jeżeli warunek stopu zwrócił true, tzn. należy kontynuować algorytm genetyczny.</returns>
         public Boolean NextGeneration()
         {
             if (StopCondition.ShouldContinue(Specimens) == false)

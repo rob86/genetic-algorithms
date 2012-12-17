@@ -14,32 +14,45 @@ using GA.Core.Comparer;
 
 namespace GA.Core.Selection
 {
-	/*
-	 * Selekcja SUS.
-	 */
+	/// <summary>
+	/// Implemenuje selekcję SUS.
+	/// </summary>
     public class StochasticUniversalSamplingStrategy : ISelectionStrategy
     {
-	   /*
-		* Generator liczb losowych.
-	    */
+        /// <summary>
+        /// Wykorzystywany generator liczb losowych.
+        /// </summary>
         private IRandomGenerator RandomGenerator
         {
             get;
             set;
         }
-		/*
-		 * Rozmiar populacji po selekcji.
-		 */
+
+        /// <summary>
+        /// Rozmiar populacji po selekcji.
+        /// </summary>
         private ISelectionSizeStrategy PopulationSize
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="populationSize">Rozmiar populacji po selekcji.</param>
+        /// <param name="randomGenerator">Wykorzystywany generator liczb losowych.</param>
         public StochasticUniversalSamplingStrategy(ISelectionSizeStrategy populationSize, IRandomGenerator randomGenerator)
         {
             PopulationSize = populationSize;
             RandomGenerator = randomGenerator;
         }
+
+        /// <summary>
+        /// Realizuje algorytm selekcji.
+        /// </summary>
+        /// <param name="population">Populacja poddawana selekcji.</param>
+        /// <returns>Zbiór osobników populacji, wybranych w wyniku selekcji do następnej generacji.</returns>
         public IChromosome[] Select(IChromosome[] population)
         {
             if (population.Length < 2)

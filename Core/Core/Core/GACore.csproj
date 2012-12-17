@@ -44,17 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chromosome\PermutationChromosome.cs" />
+    <Compile Include="Chromosome\Permutation\PermutationChromosome.cs" />
+    <Compile Include="Chromosome\Permutation\CrossOver\CycleCrossOverStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\CrossOver\ICrossOverStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\CrossOver\OrderCrossOverStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\CrossOver\PartiallyMappedCrossOverStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\Mutation\IMutationStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\Mutation\InsertMutationStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\Mutation\InverseMutationStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\Mutation\ScrambleMutationStrategy.cs" />
+    <Compile Include="Chromosome\Permutation\Mutation\SwapMutationStrategy.cs" />
     <Compile Include="Comparer\AgeComparer.cs" />
     <Compile Include="Comparer\FitnessComparer.cs" />
     <Compile Include="Comparer\FitnessReverseComparer.cs" />
     <Compile Include="Population\Population.cs" />
     <Compile Include="Population\IPopulation.cs" />
     <Compile Include="Selection\Adapter\SurvivorSelectionStrategyAdapter.cs" />
-    <Compile Include="Selection\Ranking\ExponentialSelectionRanking.cs" />
-    <Compile Include="Selection\Ranking\LinearSelectionRanking.cs" />
-    <Compile Include="Selection\Ranking\ISelectionRanking.cs" />
-    <Compile Include="Selection\Ranking\NoSelectionRanking.cs" />
     <Compile Include="Selection\RouletteWheelSelectionStrategy.cs" />
     <Compile Include="Selection\StochasticUniversalSamplingStrategy.cs" />
     <Compile Include="Selection\NoSelectionStrategy.cs" />

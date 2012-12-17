@@ -4,18 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-using GA.Core.Chromosome;
+using GA.Core.Chromosome.Permutation;
 
 namespace GA.Core.Fitness
 {
+    /// <summary>
+    /// Ocena dopasowania dla problemu komiwojażera.
+    /// </summary>
     public class TSPFitness : IFitness
     {
+        /// <summary>
+        /// Macierz kosztu przejścia.
+        /// </summary>
         private Double[,] costMatrix;
 
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="costMatrix">Macierz kosztu przejścia.</param>
         public TSPFitness(Double[,] costMatrix)
         {
             this.costMatrix = (Double[,])costMatrix.Clone();
         }
+        /// <summary>
+        /// Dokonuje oceny dopasowania.
+        /// </summary>
+        /// <param name="chromosome">Oceniany chromosom.</param>
+        /// <returns>Ocena dopasowania.</returns>
         public double Evaluate(PermutationChromosome chromosome)
         {
             Int32[] permutation = chromosome.Data;

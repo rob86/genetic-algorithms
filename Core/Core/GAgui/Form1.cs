@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using GA.Core.Chromosome;
+using GA.Core.Chromosome.Permutation;
 using GA.Core.Util;
 using GA.Core.Population;
 using GA.Core.Selection;

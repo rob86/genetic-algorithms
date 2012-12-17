@@ -7,14 +7,16 @@ using GA.Core.Chromosome;
 
 namespace GA.Core.Stop
 {
-    /*
-	 * Interfejs dla warunku stopu.
-	 */
+    /// <summary>
+    /// Interfejs algorytmu kontroli warunku stopu.
+    /// </summary>
     public interface IStopCondition
     {
-		/*
-		 * Zwraca true, gdy warunek stopu nie został osiągnięty dla populacji population.
-		 */
+        /// <summary>
+        /// Sprawdza warunek stopu.
+        /// </summary>
+        /// <param name="population">Populacja, dla której ma być sprawdzony warunek stopu.</param>
+        /// <returns>True, gdy warunek stopu nie został osiągnięty dla populacji population.</returns>
         Boolean ShouldContinue(IChromosome[] population);
     }
 }
