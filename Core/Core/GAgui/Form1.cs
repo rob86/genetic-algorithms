@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 using GA.Core.Chromosome.Permutation;
@@ -27,6 +28,9 @@ namespace GAgui
         List<string> strategieMutacji;
         List<string> selekcja;
 
+        private Thread m_thread;        //dodanie watku
+        private DefaultPopulation population;
+        private NoChangeStopCondion stopCondition;
         public Form1()
         {
             InitializeComponent();
@@ -133,9 +137,9 @@ namespace GAgui
             prototype.Fitness = new TSPFitness(costMatrix);
             // warunek zatrzymania
             // stop condition, keep reference for selecting the leader
-            NoChangeStopCondion stopCondition = new NoChangeStopCondion(10);
+            stopCondition = new NoChangeStopCondion(10);
             // tworzenie populacji - domyslnej.
-            DefaultPopulation population = new DefaultPopulation(prototype, RozmiarPopulacji);
+            population = new DefaultPopulation(prototype, RozmiarPopulacji);
             //wybor seleckji
             string SelectionStrategy = this.comboBox_Selekcja.Text;
             switch (SelectionStrategy)
@@ -159,11 +163,9 @@ namespace GAgui
                     return;
             }
             // set population's parameters
-            population.RandomGenerator = new ThreadSafeRandomGenerator();
-            population.StopCondition = stopCondition;
-
             if (checkBox_show_all_result.Checked)
             {
+
                 while (population.NextGeneration())
                 {
                     textBox1.AppendText("Best fitness: " + (1.0 / stopCondition.Leader.Evaluate()));
@@ -172,12 +174,44 @@ namespace GAgui
             }
             else
             {
-                while (population.NextGeneration()) ;
-                textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
-                textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
+                if (!checkBox_thread.Checked)
+                {
+                    population.RandomGenerator = new ThreadSafeRandomGenerator();
+                    population.StopCondition = stopCondition;
+                    while (population.NextGeneration()) ;
+                    textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
+                    textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
+                }
+                else
+                {
+                    try
+                    {
+                        // uruchomic w watku zadania
+                        ThreadStart ts = new ThreadStart(StartAG);
+                        m_thread = new Thread(ts);                      // create the worker thread
+                        m_thread.Start();                               // go ahead and start the worker thread
+                        Thread.Sleep(Int32.Parse(textTime.Text) * 100);
+                        m_thread.Abort();
+                        m_thread.Join();
+
+                        textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
+                        textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
+                    }
+                    catch (Exception ex) // wszystkie niewylapane wczesniej, czyli takie, po ktorych sie nie da kontynuowac
+                    {
+                        MessageBox.Show("blad z czymstam:" + ex.ToString());
+                    }
+                }
             }
         }
-
+        private void StartAG()
+        {
+            population.RandomGenerator = new ThreadSafeRandomGenerator();
+            population.StopCondition = stopCondition;
+            while (population.NextGeneration()) ;
+            //textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
+            //textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
+        }
         private void button_add_Click(object sender, EventArgs e)
         {
             string s1 = textBox_oneList.Text;

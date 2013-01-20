@@ -32,6 +32,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox_krzyzowanie = new System.Windows.Forms.ComboBox();
             this.comboBox_mutacja = new System.Windows.Forms.ComboBox();
@@ -40,6 +41,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_RozmiarPopulacji = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.textTime = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.checkBox_show_all_result = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -48,15 +50,16 @@
             this.textBox_oneList = new System.Windows.Forms.TextBox();
             this.listBox_wezly = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button_add = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button_add = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.schematyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.a1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBox_thread = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -86,7 +89,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.textBox1);
             this.splitContainer1.Panel2MinSize = 100;
-            this.splitContainer1.Size = new System.Drawing.Size(890, 422);
+            this.splitContainer1.Size = new System.Drawing.Size(878, 543);
             this.splitContainer1.SplitterDistance = 462;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -105,7 +108,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 138F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(462, 422);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(462, 543);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // groupBox1
@@ -124,6 +127,7 @@
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.comboBox_krzyzowanie, 1, 3);
             this.tableLayoutPanel3.Controls.Add(this.comboBox_mutacja, 1, 2);
@@ -132,6 +136,7 @@
             this.tableLayoutPanel3.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.textBox_RozmiarPopulacji, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.label4, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.textTime, 1, 4);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(2);
@@ -144,6 +149,17 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(450, 113);
             this.tableLayoutPanel3.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(3, 96);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(99, 17);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "max czas";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
             // 
@@ -212,7 +228,7 @@
             this.textBox_RozmiarPopulacji.Name = "textBox_RozmiarPopulacji";
             this.textBox_RozmiarPopulacji.Size = new System.Drawing.Size(339, 20);
             this.textBox_RozmiarPopulacji.TabIndex = 2;
-            this.textBox_RozmiarPopulacji.Text = "40";
+            this.textBox_RozmiarPopulacji.Text = "100";
             // 
             // label4
             // 
@@ -225,12 +241,21 @@
             this.label4.Text = "Selekcja:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // textTime
+            // 
+            this.textTime.Location = new System.Drawing.Point(108, 99);
+            this.textTime.Name = "textTime";
+            this.textTime.Size = new System.Drawing.Size(155, 20);
+            this.textTime.TabIndex = 10;
+            this.textTime.Text = "30";
+            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.checkBox_thread);
             this.groupBox3.Controls.Add(this.checkBox_show_all_result);
             this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 372);
+            this.groupBox3.Location = new System.Drawing.Point(3, 493);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(456, 47);
             this.groupBox3.TabIndex = 0;
@@ -264,7 +289,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 141);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(456, 225);
+            this.groupBox2.Size = new System.Drawing.Size(456, 346);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Wprowadzanie danych";
@@ -285,7 +310,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 16F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(450, 206);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(450, 327);
             this.tableLayoutPanel2.TabIndex = 7;
             // 
             // textBox_oneList
@@ -302,7 +327,7 @@
             this.listBox_wezly.FormattingEnabled = true;
             this.listBox_wezly.Location = new System.Drawing.Point(3, 59);
             this.listBox_wezly.Name = "listBox_wezly";
-            this.listBox_wezly.Size = new System.Drawing.Size(444, 144);
+            this.listBox_wezly.Size = new System.Drawing.Size(444, 265);
             this.listBox_wezly.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -318,6 +343,39 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(446, 28);
             this.flowLayoutPanel1.TabIndex = 4;
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button4.Location = new System.Drawing.Point(3, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(60, 20);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "Wczytaj";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button5.Location = new System.Drawing.Point(69, 3);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(60, 20);
+            this.button5.TabIndex = 6;
+            this.button5.Text = "Zapisz";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button3.Location = new System.Drawing.Point(135, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(60, 20);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Wyczyść";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button_add
             // 
@@ -343,39 +401,6 @@
             this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
-            // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button3.Location = new System.Drawing.Point(135, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(60, 20);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Wyczyść";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button4.Location = new System.Drawing.Point(3, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(60, 20);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "Wczytaj";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button5
-            // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button5.Location = new System.Drawing.Point(69, 3);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(60, 20);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "Zapisz";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -383,7 +408,7 @@
             this.textBox1.MinimumSize = new System.Drawing.Size(76, 82);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(424, 422);
+            this.textBox1.Size = new System.Drawing.Size(412, 543);
             this.textBox1.TabIndex = 0;
             // 
             // menuStrip1
@@ -392,7 +417,7 @@
             this.schematyToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(890, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(878, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -410,11 +435,23 @@
             this.a1ToolStripMenuItem.Size = new System.Drawing.Size(88, 22);
             this.a1ToolStripMenuItem.Text = "A1";
             // 
+            // checkBox_thread
+            // 
+            this.checkBox_thread.AutoSize = true;
+            this.checkBox_thread.Checked = true;
+            this.checkBox_thread.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_thread.Location = new System.Drawing.Point(180, 19);
+            this.checkBox_thread.Name = "checkBox_thread";
+            this.checkBox_thread.Size = new System.Drawing.Size(71, 17);
+            this.checkBox_thread.TabIndex = 2;
+            this.checkBox_thread.Text = "in Thread";
+            this.checkBox_thread.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(890, 446);
+            this.ClientSize = new System.Drawing.Size(878, 567);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
@@ -473,6 +510,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textTime;
+        private System.Windows.Forms.CheckBox checkBox_thread;
     }
 }
 

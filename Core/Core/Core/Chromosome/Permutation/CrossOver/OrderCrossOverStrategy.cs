@@ -71,10 +71,14 @@ namespace GA.Core.Chromosome.Permutation
                 Int32 dPosition = copUpper + 1;
                 while (rPosition != copLower)
                 {
-                    if (ValueInRange(data1, data2[dPosition], copLower, copUpper) == false)
+                    //pmaziarz -> tutaj jest cos nie tak -> todo test
+                    if (data2.Length > dPosition && result.Length > rPosition)
                     {
-                        result[rPosition] = data2[dPosition];
-                        rPosition = ++rPosition % length;
+                        if (ValueInRange(data1, data2[dPosition], copLower, copUpper) == false)
+                        {
+                            result[rPosition] = data2[dPosition];
+                            rPosition = ++rPosition % length;
+                        }
                     }
                     dPosition = ++dPosition % length;
                 }
