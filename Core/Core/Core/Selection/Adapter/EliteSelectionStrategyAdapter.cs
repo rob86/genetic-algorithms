@@ -56,12 +56,20 @@ namespace GA.Core.Selection
             UInt32 size = EliteSize.ComputeSize(population);
             if (population.Length < size)
             {
-                return AdaptedStrategy.Select(population).ToArray();
+                return AdaptedStrategy != null ? AdaptedStrategy.Select(population).ToArray() : population;
             }
             else
             {
                 ArrayAlgorithm.ParallelQuickSort(population, comparer);
-                return population.Take((Int32)EliteSize.ComputeSize(population)).Concat(AdaptedStrategy.Select(population)).ToArray();
+
+                if (AdaptedStrategy != null)
+                {
+                    return population.Take((Int32)EliteSize.ComputeSize(population)).Concat(AdaptedStrategy.Select(population)).ToArray();
+                }
+                else
+                {
+                    return population.Take((Int32)EliteSize.ComputeSize(population)).ToArray();
+                }
             }
         }
     }

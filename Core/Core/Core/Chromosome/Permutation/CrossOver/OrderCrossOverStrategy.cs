@@ -67,12 +67,11 @@ namespace GA.Core.Chromosome.Permutation
                 }
 
                 // Copy rest from second parent in order
-                Int32 rPosition = copUpper + 1;
-                Int32 dPosition = copUpper + 1;
+                Int32 rPosition = (copUpper + 1) % length;
+                Int32 dPosition = (copUpper + 1) % length;
                 while (rPosition != copLower)
                 {
-                    //pmaziarz -> tutaj jest cos nie tak -> todo test
-                    if (data2.Length > dPosition && result.Length > rPosition)
+                    if (data2.Length > dPosition)
                     {
                         if (ValueInRange(data1, data2[dPosition], copLower, copUpper) == false)
                         {

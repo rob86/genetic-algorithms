@@ -58,7 +58,7 @@ namespace GA.Core.Stop
                     newLeaderReference = chromosome;
                 }
             }
-            if (Leader == null || Leader.ToString().Equals(newLeaderReference.ToString()) == false)
+            if (Leader == null || (Leader.ToString().Equals(newLeaderReference.ToString()) == false && Leader.Evaluate() < newLeaderFitness))
             {
                 numberOfRepeats = 0;
                 Leader = newLeaderReference;

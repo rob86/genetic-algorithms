@@ -123,6 +123,7 @@ namespace GA.Core.Population
                 });
 
             // new population
+            Specimens = offspring;
             Parallel.ForEach(Specimens, specimen =>
                 {
                     specimen.IncrementAge();

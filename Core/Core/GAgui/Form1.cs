@@ -28,7 +28,7 @@ namespace GAgui
         List<string> strategieMutacji;
         List<string> selekcja;
 
-        private Thread m_thread;        //dodanie watku
+        private BackgroundWorker worker;
         private DefaultPopulation population;
         private NoChangeStopCondion stopCondition;
         public Form1()
@@ -87,16 +87,57 @@ namespace GAgui
                 { INF,   INF, 100.0, INF},
             };*/
             InsetyList(costMatrix);
+
+            worker = new BackgroundWorker();
+            worker.WorkerSupportsCancellation = true;
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += new DoWorkEventHandler((Object sender, DoWorkEventArgs args) =>
+                {
+                    population.RandomGenerator = new ThreadSafeRandomGenerator();
+                    population.StopCondition = stopCondition;
+
+                    worker.ReportProgress(0);
+                    while (population.NextGeneration() && !worker.CancellationPending)
+                    {
+                        if (population.Generation % 1000 == 0)
+                        {
+                            worker.ReportProgress((Int32)population.Generation);
+                        }
+                    }
+                    worker.ReportProgress((Int32)population.Generation);
+                });
+            worker.ProgressChanged += new ProgressChangedEventHandler((Object sender, ProgressChangedEventArgs args) => 
+                {
+                    progressLabel.Text = "Iteration: " + args.ProgressPercentage;
+
+                    if (checkBox_show_all_result.Checked && stopCondition.Leader != null)
+                    {
+                        textBox1.AppendText("Najlepsze dopasowanie: " + (1.0 / stopCondition.Leader.Evaluate()) + Environment.NewLine);
+                        textBox1.AppendText(stopCondition.Leader.ToString() + Environment.NewLine);
+                    }
+                });
+            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler((Object sender, RunWorkerCompletedEventArgs args) =>
+                {
+                    textBox1.AppendText("Najlepsze dopasowanie: " + (1.0 / stopCondition.Leader.Evaluate()) + Environment.NewLine);
+                    textBox1.AppendText(stopCondition.Leader.ToString() + Environment.NewLine);
+                    startButton.Text = "Start";
+                });
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (worker.IsBusy)
+            {
+                worker.CancelAsync();
+                return;
+            }
+
             if (costMatrix == null)
             {
                 MessageBox.Show("Macierz jest pusta. Uzupełnij graf.");
                 return;
             }
-            RozmiarPopulacji = UInt32.Parse(textBox_RozmiarPopulacji.Text);
+            RozmiarPopulacji = (UInt32)populationSize.Value;
             prototype = new PermutationChromosome(0, costMatrix.GetLength(0) - 1);
             //wybor strategi mutacji
             string MutationStrategy = this.comboBox_mutacja.Text;
@@ -137,7 +178,7 @@ namespace GAgui
             prototype.Fitness = new TSPFitness(costMatrix);
             // warunek zatrzymania
             // stop condition, keep reference for selecting the leader
-            stopCondition = new NoChangeStopCondion(10);
+            stopCondition = new NoChangeStopCondion((UInt32)noChangeStopCondition.Value);
             // tworzenie populacji - domyslnej.
             population = new DefaultPopulation(prototype, RozmiarPopulacji);
             //wybor seleckji
@@ -162,55 +203,8 @@ namespace GAgui
                 default:
                     return;
             }
-            // set population's parameters
-            if (checkBox_show_all_result.Checked)
-            {
-
-                while (population.NextGeneration())
-                {
-                    textBox1.AppendText("Best fitness: " + (1.0 / stopCondition.Leader.Evaluate()));
-                    textBox1.AppendText(stopCondition.Leader.ToString());
-                }
-            }
-            else
-            {
-                if (!checkBox_thread.Checked)
-                {
-                    population.RandomGenerator = new ThreadSafeRandomGenerator();
-                    population.StopCondition = stopCondition;
-                    while (population.NextGeneration()) ;
-                    textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
-                    textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
-                }
-                else
-                {
-                    try
-                    {
-                        // uruchomic w watku zadania
-                        ThreadStart ts = new ThreadStart(StartAG);
-                        m_thread = new Thread(ts);                      // create the worker thread
-                        m_thread.Start();                               // go ahead and start the worker thread
-                        Thread.Sleep(Int32.Parse(textTime.Text) * 100);
-                        m_thread.Abort();
-                        m_thread.Join();
-
-                        textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
-                        textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
-                    }
-                    catch (Exception ex) // wszystkie niewylapane wczesniej, czyli takie, po ktorych sie nie da kontynuowac
-                    {
-                        MessageBox.Show("blad z czymstam:" + ex.ToString());
-                    }
-                }
-            }
-        }
-        private void StartAG()
-        {
-            population.RandomGenerator = new ThreadSafeRandomGenerator();
-            population.StopCondition = stopCondition;
-            while (population.NextGeneration()) ;
-            //textBox1.AppendText("Best fitness:  \t" + (1.0 / stopCondition.Leader.Evaluate()) + "\n");
-            //textBox1.AppendText(stopCondition.Leader.ToString() + "\n");
+            startButton.Text = "Stop";
+            worker.RunWorkerAsync(stopCondition);
         }
         private void button_add_Click(object sender, EventArgs e)
         {
