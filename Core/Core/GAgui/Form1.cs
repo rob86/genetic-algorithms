@@ -31,6 +31,9 @@ namespace GAgui
         private BackgroundWorker worker;
         private DefaultPopulation population;
         private NoChangeStopCondion stopCondition;
+
+        DateTime TimeStart;
+        DateTime TimeStop;
         public Form1()
         {
             InitializeComponent();
@@ -121,6 +124,9 @@ namespace GAgui
                     textBox1.AppendText("Najlepsze dopasowanie: " + (1.0 / stopCondition.Leader.Evaluate()) + Environment.NewLine);
                     textBox1.AppendText(stopCondition.Leader.ToString() + Environment.NewLine);
                     startButton.Text = "Start";
+                    TimeStop = DateTime.Now;
+                    TimeSpan roznica = TimeStop - TimeStart;
+                    textBox1.AppendText("Czas pracy:" + roznica.TotalMilliseconds + "ms\n");
                 });
         }
 
@@ -204,6 +210,7 @@ namespace GAgui
                     return;
             }
             startButton.Text = "Stop";
+            TimeStart = DateTime.Now;
             worker.RunWorkerAsync(stopCondition);
         }
         private void button_add_Click(object sender, EventArgs e)
@@ -319,7 +326,6 @@ namespace GAgui
             costMatrix = null;
             costMatrix = Matrix;
             InsetyList(costMatrix);
-            
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -362,7 +368,9 @@ namespace GAgui
             {
                 SaveToFile(costMatrix, saveFileDialog1.FileName);
             }
-            
         }
+
     }
+
+    
 }

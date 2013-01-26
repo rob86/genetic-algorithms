@@ -83,6 +83,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bigExample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Test2_stronka_e2rd.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
