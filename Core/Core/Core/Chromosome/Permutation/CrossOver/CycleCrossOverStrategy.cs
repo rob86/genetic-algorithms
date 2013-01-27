@@ -64,6 +64,10 @@ namespace GA.Core.Chromosome.Permutation
                 ch1.Data = child1;
                 ch2.Data = child2;
             }
+            public override string ToString()
+            {
+                return "CycleCrossOverStrategy";
+            }
         }
     }
 }

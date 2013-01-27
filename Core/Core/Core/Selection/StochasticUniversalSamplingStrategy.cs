@@ -88,5 +88,9 @@ namespace GA.Core.Selection
             Debug.Assert(false);
             return result;
         }
+        public override string ToString()
+        {
+            return "StochasticUniversalSamplingStrategy";
+        }
     }
 }

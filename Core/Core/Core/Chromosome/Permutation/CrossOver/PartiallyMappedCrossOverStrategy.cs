@@ -138,6 +138,10 @@ namespace GA.Core.Chromosome.Permutation
                 }
                 return false;
             }
+            public override string ToString()
+            {
+                return "PartiallyMappedCrossOver";
+            }
         }
     }
 }

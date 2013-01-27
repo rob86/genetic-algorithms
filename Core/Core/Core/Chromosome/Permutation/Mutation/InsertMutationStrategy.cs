@@ -41,11 +41,7 @@ namespace GA.Core.Chromosome.Permutation
                     chromosome.Data[mpLower + 1] = mutationValueUpper;
                 }
             }
-            /// <summary>
-            /// Zwraca nazwę algorytmu mutacji.
-            /// </summary>
-            /// <returns>Nazwa algorytmu mutacji</returns>
-            public string GetName()
+            public override string ToString()
             {
                 return "InsertMutationStrategy";
             }

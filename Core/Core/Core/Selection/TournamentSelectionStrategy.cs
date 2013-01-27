@@ -49,6 +49,18 @@ namespace GA.Core.Selection
         /// Konstruktor.
         /// </summary>
         /// <param name="populationSize">Rozmiar populacji po selekcji.</param>
+        /// <param name="randomGenerator">Wykorzystywany generator liczb losowych.</param>
+        public TournamentSelectionStrategy(ISelectionSizeStrategy populationSize, IRandomGenerator randomGenerator)
+        {
+            TournamentSize = new FixedSizeStrategy(2);
+            PopulationSize = populationSize;
+            RandomGenerator = randomGenerator;
+        }
+
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="populationSize">Rozmiar populacji po selekcji.</param>
         /// <param name="tournamentSize">Rozmiar grupy turniejowej.</param>
         /// <param name="randomGenerator">Wykorzystywany generator liczb losowych.</param>
         public TournamentSelectionStrategy(ISelectionSizeStrategy populationSize, ISelectionSizeStrategy tournamentSize, IRandomGenerator randomGenerator)
@@ -86,6 +98,10 @@ namespace GA.Core.Selection
                 });
 
             return result;
+        }
+        public override string ToString()
+        {
+            return "TournamentSelectionStrategy";
         }
     }
 }

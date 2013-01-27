@@ -32,11 +32,7 @@ namespace GA.Core.Chromosome.Permutation
                     Array.Reverse(chromosome.Data, mpLower, mpUpper - mpLower);
                 }
             }
-            /// <summary>
-            /// Zwraca nazwę algorytmu mutacji.
-            /// </summary>
-            /// <returns>Nazwa algorytmu mutacji</returns>
-            public string GetName()
+            public override string ToString()
             {
                 return "InverseMutationStrategy";
             }

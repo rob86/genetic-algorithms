@@ -24,5 +24,9 @@ namespace GA.Core.Selection
         {
             return population;
         }
+        public override string ToString()
+        {
+            return "NoSelectionStrategy";
+        }
     }
 }

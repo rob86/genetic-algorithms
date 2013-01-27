@@ -82,5 +82,9 @@ namespace GA.Core.Selection
             }
             return result;
         }
+        public override string ToString()
+        {
+            return "RouletteWheelSelectionStrategy";
+        }
     }
 }

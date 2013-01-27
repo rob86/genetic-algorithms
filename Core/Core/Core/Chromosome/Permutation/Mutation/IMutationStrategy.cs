@@ -11,11 +11,6 @@ namespace GA.Core.Chromosome.Permutation
         /// </summary>
         public interface IMutationStrategy
         {
-            /// <summary>
-            /// Zwraca nazwę algorytmu mutacji.
-            /// </summary>
-            /// <returns>Nazwa algorytmu mutacji</returns>
-            string GetName();
 
             /// <summary>
             /// Realizuje algorytm mutacji na zadanym chromosomie.
