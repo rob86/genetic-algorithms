@@ -59,10 +59,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tournamentGroupSizeSpinner = new System.Windows.Forms.NumericUpDown();
-            this.tabMutation = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.mutationAlgorithmComboBox = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.tabModifiers = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.selectionSurvivorGroupBox = new System.Windows.Forms.GroupBox();
@@ -81,6 +77,10 @@
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.selecitonModifierComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.tabMutation = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.mutationAlgorithmComboBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabCrossover = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.crossoverAlgorithmComboBox = new System.Windows.Forms.ComboBox();
@@ -119,8 +119,6 @@
             this.selectionTournamentGroupBox.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tournamentGroupSizeSpinner)).BeginInit();
-            this.tabMutation.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             this.tabModifiers.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
             this.selectionSurvivorGroupBox.SuspendLayout();
@@ -131,6 +129,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.eliteSizeSpinner)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
+            this.tabMutation.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.tabCrossover.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tabStop.SuspendLayout();
@@ -319,6 +319,11 @@
             this.populationSpinner.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.populationSpinner.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.populationSpinner.Location = new System.Drawing.Point(163, 2);
             this.populationSpinner.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.populationSpinner.Minimum = new decimal(new int[] {
@@ -330,7 +335,7 @@
             this.populationSpinner.Size = new System.Drawing.Size(292, 22);
             this.populationSpinner.TabIndex = 11;
             this.populationSpinner.Value = new decimal(new int[] {
-            10,
+            100,
             0,
             0,
             0});
@@ -486,6 +491,11 @@
             this.selectionSizeSpinner.Name = "selectionSizeSpinner";
             this.selectionSizeSpinner.Size = new System.Drawing.Size(274, 22);
             this.selectionSizeSpinner.TabIndex = 14;
+            this.selectionSizeSpinner.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // selectionSizeCheckBox
             // 
@@ -576,57 +586,11 @@
             this.tournamentGroupSizeSpinner.Name = "tournamentGroupSizeSpinner";
             this.tournamentGroupSizeSpinner.Size = new System.Drawing.Size(274, 22);
             this.tournamentGroupSizeSpinner.TabIndex = 13;
-            // 
-            // tabMutation
-            // 
-            this.tabMutation.Controls.Add(this.tableLayoutPanel6);
-            this.tabMutation.Location = new System.Drawing.Point(4, 25);
-            this.tabMutation.Margin = new System.Windows.Forms.Padding(4);
-            this.tabMutation.Name = "tabMutation";
-            this.tabMutation.Padding = new System.Windows.Forms.Padding(4);
-            this.tabMutation.Size = new System.Drawing.Size(466, 288);
-            this.tabMutation.TabIndex = 2;
-            this.tabMutation.Text = "Mutacja";
-            this.tabMutation.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.mutationAlgorithmComboBox, 1, 0);
-            this.tableLayoutPanel6.Controls.Add(this.label4, 0, 0);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(4);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(458, 280);
-            this.tableLayoutPanel6.TabIndex = 2;
-            // 
-            // mutationAlgorithmComboBox
-            // 
-            this.mutationAlgorithmComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mutationAlgorithmComboBox.FormattingEnabled = true;
-            this.mutationAlgorithmComboBox.Location = new System.Drawing.Point(164, 4);
-            this.mutationAlgorithmComboBox.Margin = new System.Windows.Forms.Padding(4);
-            this.mutationAlgorithmComboBox.Name = "mutationAlgorithmComboBox";
-            this.mutationAlgorithmComboBox.Size = new System.Drawing.Size(290, 24);
-            this.mutationAlgorithmComboBox.TabIndex = 6;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(4, 0);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(152, 31);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Algorytm:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tournamentGroupSizeSpinner.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
             // tabModifiers
             // 
@@ -859,6 +823,57 @@
             this.label9.TabIndex = 10;
             this.label9.Text = "Modyfikatory:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tabMutation
+            // 
+            this.tabMutation.Controls.Add(this.tableLayoutPanel6);
+            this.tabMutation.Location = new System.Drawing.Point(4, 25);
+            this.tabMutation.Margin = new System.Windows.Forms.Padding(4);
+            this.tabMutation.Name = "tabMutation";
+            this.tabMutation.Padding = new System.Windows.Forms.Padding(4);
+            this.tabMutation.Size = new System.Drawing.Size(466, 288);
+            this.tabMutation.TabIndex = 2;
+            this.tabMutation.Text = "Mutacja";
+            this.tabMutation.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 2;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Controls.Add(this.mutationAlgorithmComboBox, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(4, 4);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(458, 280);
+            this.tableLayoutPanel6.TabIndex = 2;
+            // 
+            // mutationAlgorithmComboBox
+            // 
+            this.mutationAlgorithmComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mutationAlgorithmComboBox.FormattingEnabled = true;
+            this.mutationAlgorithmComboBox.Location = new System.Drawing.Point(164, 4);
+            this.mutationAlgorithmComboBox.Margin = new System.Windows.Forms.Padding(4);
+            this.mutationAlgorithmComboBox.Name = "mutationAlgorithmComboBox";
+            this.mutationAlgorithmComboBox.Size = new System.Drawing.Size(290, 24);
+            this.mutationAlgorithmComboBox.TabIndex = 6;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Location = new System.Drawing.Point(4, 0);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(152, 31);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Algorytm:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tabCrossover
             // 
@@ -1111,9 +1126,6 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tournamentGroupSizeSpinner)).EndInit();
-            this.tabMutation.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel6.PerformLayout();
             this.tabModifiers.ResumeLayout(false);
             this.tableLayoutPanel14.ResumeLayout(false);
             this.selectionSurvivorGroupBox.ResumeLayout(false);
@@ -1127,6 +1139,9 @@
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel15.ResumeLayout(false);
             this.tableLayoutPanel15.PerformLayout();
+            this.tabMutation.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
             this.tabCrossover.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();

@@ -26,7 +26,6 @@ namespace GA.GUI
         Double[,] costMatrix;
         List<Object> crossoverStategies;
         List<Object> mutationStategies;
-        List<String> selectionStrategies;
 
         private BackgroundWorker worker;
         private DefaultPopulation population;
@@ -63,7 +62,7 @@ namespace GA.GUI
             selectionAlgorithmComboBox.DisplayMember = "Key";
             selectionAlgorithmComboBox.ValueMember = "Value";
             selectionAlgorithmComboBox.DataSource = new BindingSource(SelectionStrategiesDict, null);
-
+            selectionAlgorithmComboBox.SelectedIndex = 1;
 
             {
                 crossoverStategies = new List<Object>();
@@ -120,7 +119,7 @@ namespace GA.GUI
             worker.WorkerReportsProgress = true;
             worker.DoWork += new DoWorkEventHandler((Object sender, DoWorkEventArgs args) =>
                 {
-                    worker.ReportProgress(0);
+                    worker.ReportProgress(1);
                     while (population.NextGeneration() && !worker.CancellationPending)
                     {
                         if (population.Generation % 1000 == 0)
@@ -364,12 +363,14 @@ namespace GA.GUI
             if (eliteSizeCheckBox.Checked)
             {
                 eliteSizeSpinner.Maximum = 1.0M;
+                eliteSizeSpinner.Increment = 0.1M;
                 eliteSizeSpinner.DecimalPlaces = 4;
                 eliteSizeSpinner.Value = value / 1000;
             }
             else
             {
                 eliteSizeSpinner.Maximum = 1000;
+                eliteSizeSpinner.Increment = 10;
                 eliteSizeSpinner.DecimalPlaces = 0;
                 eliteSizeSpinner.Value = value * 1000;
             }
@@ -383,12 +384,14 @@ namespace GA.GUI
             if (survivorSizeCheckBox.Checked)
             {
                 survivorSizeSpinner.Maximum = 1.0M;
+                survivorSizeSpinner.Increment = 0.1M;
                 survivorSizeSpinner.DecimalPlaces = 4;
                 survivorSizeSpinner.Value = value / 1000;
             }
             else
             {
                 survivorSizeSpinner.Maximum = 1000;
+                survivorSizeSpinner.Increment = 10;
                 survivorSizeSpinner.DecimalPlaces = 0;
                 survivorSizeSpinner.Value = value * 1000;
             }
@@ -402,12 +405,14 @@ namespace GA.GUI
             if (selectionSizeCheckBox.Checked)
             {
                 selectionSizeSpinner.Maximum = 1.0M;
+                selectionSizeSpinner.Increment = 0.1M;
                 selectionSizeSpinner.DecimalPlaces = 4;
                 selectionSizeSpinner.Value = value / 1000;
             }
             else
             {
                 selectionSizeSpinner.Maximum = 1000;
+                selectionSizeSpinner.Increment = 10;
                 selectionSizeSpinner.DecimalPlaces = 0;
                 selectionSizeSpinner.Value = value * 1000;
             }
@@ -421,12 +426,14 @@ namespace GA.GUI
             if (tournamentGroupSizeCheckBox.Checked)
             {
                 tournamentGroupSizeSpinner.Maximum = 1.0M;
+                tournamentGroupSizeSpinner.Increment = 0.1M;
                 tournamentGroupSizeSpinner.DecimalPlaces = 4;
                 tournamentGroupSizeSpinner.Value = value / 1000;
             }
             else
             {
                 tournamentGroupSizeSpinner.Maximum = 1000;
+                tournamentGroupSizeSpinner.Increment = 10;
                 tournamentGroupSizeSpinner.DecimalPlaces = 0;
                 tournamentGroupSizeSpinner.Value = value * 1000;
             }
