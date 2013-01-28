@@ -1,4 +1,4 @@
-﻿namespace GAgui
+﻿namespace GA.GUI
 {
     partial class MainForm
     {

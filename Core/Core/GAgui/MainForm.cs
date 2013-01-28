@@ -19,7 +19,7 @@ using GA.Core.Stop;
 
 using System.IO;
 
-namespace GAgui
+namespace GA.GUI
 {
     public partial class MainForm : Form
     {
