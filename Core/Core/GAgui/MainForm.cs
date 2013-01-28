@@ -35,17 +35,36 @@ namespace GAgui
         DateTime TimeStart;
         DateTime TimeStop;
 
+        enum ModifierCombination { SurvivorElite, EliteSurvivor, Elite, Survivor, None };
+        Dictionary<String, ModifierCombination> ModifierCombinationDict = new Dictionary<String, ModifierCombination> {
+            { "Brak modyfikatora", ModifierCombination.None },
+            { "Elite", ModifierCombination.Elite },
+            { "Survivor", ModifierCombination.Survivor },
+            { "Survivor przed Elite", ModifierCombination.SurvivorElite },
+            { "Elite przed Survivor", ModifierCombination.EliteSurvivor },
+        };
+
+        enum SelectionStrategies { NoSelectionStrategy, RouletteWheelSelectionStrategy, StochasticUniversalSamplingStrategy, TournamentSelectionStrategy };
+        Dictionary<String, SelectionStrategies> SelectionStrategiesDict = new Dictionary<String, SelectionStrategies> {
+            { "Bran selekcji", SelectionStrategies.NoSelectionStrategy },
+            { "Selekcja koła ruletki", SelectionStrategies.RouletteWheelSelectionStrategy },
+            { "Selekcja SUS", SelectionStrategies.StochasticUniversalSamplingStrategy },
+            { "Selekcja turniejowa", SelectionStrategies.TournamentSelectionStrategy },
+        };
+
         public MainForm()
         {
             InitializeComponent();
-            {
-                selectionStrategies = new List<String>();
-                selectionStrategies.Add("StochasticUniversalSamplingStrategy");
-                selectionStrategies.Add("RouletteWheelSelectionStrategy");
-                selectionStrategies.Add("TournamentSelectionStrategy");
-                selectionStrategies.Add("NoSelectionStrategy");
-                this.selectionComboBox.DataSource = selectionStrategies;
-            }
+
+            selecitonModifierComboBox.DisplayMember = "Key";
+            selecitonModifierComboBox.ValueMember = "Value";
+            selecitonModifierComboBox.DataSource = new BindingSource(ModifierCombinationDict, null);
+
+            selectionAlgorithmComboBox.DisplayMember = "Key";
+            selectionAlgorithmComboBox.ValueMember = "Value";
+            selectionAlgorithmComboBox.DataSource = new BindingSource(SelectionStrategiesDict, null);
+
+
             {
                 crossoverStategies = new List<Object>();
                 var type = typeof(PermutationChromosome.ICrossOverStrategy);
@@ -59,7 +78,7 @@ namespace GAgui
                         = (PermutationChromosome.ICrossOverStrategy)t.GetConstructor(Type.EmptyTypes).Invoke(null);
                     crossoverStategies.Add(crossoverStrategy);
                 }
-                this.crossoverComboBox.DataSource = crossoverStategies;
+                this.crossoverAlgorithmComboBox.DataSource = crossoverStategies;
             }
             {
                 mutationStategies = new List<Object>();
@@ -74,7 +93,7 @@ namespace GAgui
                         = (PermutationChromosome.IMutationStrategy)t.GetConstructor(Type.EmptyTypes).Invoke(null);
                     mutationStategies.Add(mutationStrategy);
                 }
-                this.mutationComboBox.DataSource = mutationStategies;
+                this.mutationAlgorithmComboBox.DataSource = mutationStategies;
             }
 
             this.Text = "Algorytmów genetycznych na przykładzie problemu komiwojażera";
@@ -145,63 +164,74 @@ namespace GAgui
                 MessageBox.Show("Macierz jest pusta. Uzupełnij graf.");
                 return;
             }
+
             /*
              * Prototyp chromosomu.
              */
             PermutationChromosome chromosomePrototype = new PermutationChromosome(0, costMatrix.GetLength(0) - 1);
-            chromosomePrototype.MutationStrategy = (PermutationChromosome.IMutationStrategy)mutationComboBox.SelectedItem;
-            chromosomePrototype.CrossOverStrategy = (PermutationChromosome.ICrossOverStrategy)crossoverComboBox.SelectedItem;
-            /*
-             * Inne parametry.
-             */
+            chromosomePrototype.MutationStrategy = (PermutationChromosome.IMutationStrategy)mutationAlgorithmComboBox.SelectedItem;
+            chromosomePrototype.CrossOverStrategy = (PermutationChromosome.ICrossOverStrategy)crossoverAlgorithmComboBox.SelectedItem;
             chromosomePrototype.RandomGenerator = new ThreadSafeRandomGenerator();
-            /*
-             * Funkcja oceny dopasowania.
-             */
             chromosomePrototype.Fitness = new TSPFitness(costMatrix);
+
             /*
-             * Warunek stopu. Zachować referencję dla wskazania lidera.
+             * Populacja
              */
-            stopCondition = new NoChangeStopCondion((UInt32)stopSpinner.Value);
-            /*
-             * Rozmiar populacji
-             */
-            UInt32 populationSize = (UInt32)populationSpinner.Value;
-            /*
-             * Populacja.
-             */
-            population = new DefaultPopulation(chromosomePrototype, populationSize);
+            population = new DefaultPopulation(chromosomePrototype, (UInt32)populationSpinner.Value);
             population.RandomGenerator = new ThreadSafeRandomGenerator();
             population.StopCondition = stopCondition;
+            
             /*
-             * Strategia selekcji.
+             * Selekcja
              */
-            string SelectionStrategy = this.selectionComboBox.Text;
-            switch (SelectionStrategy)
+            ISelectionSizeStrategy selectionSizeStrategy = selectionSizeCheckBox.Checked ? (ISelectionSizeStrategy)new ProportionalSizeStrategy((Double)selectionSizeSpinner.Value) : (ISelectionSizeStrategy)new FixedSizeStrategy((UInt32)selectionSizeSpinner.Value);
+            switch ((SelectionStrategies)selectionAlgorithmComboBox.SelectedValue)
             {
-                case "NoSelectionStrategy":
+                case SelectionStrategies.NoSelectionStrategy:
                     population.SelectionStrategy = new NoSelectionStrategy();
                     break;
-                case "RouletteWheelSelectionStrategy":
-                    population.SelectionStrategy = new RouletteWheelSelectionStrategy(new FixedSizeStrategy(populationSize), new ThreadSafeRandomGenerator());
+                case SelectionStrategies.RouletteWheelSelectionStrategy:
+                    population.SelectionStrategy = new RouletteWheelSelectionStrategy(selectionSizeStrategy, new ThreadSafeRandomGenerator());
                     break;
-                case "StochasticUniversalSamplingStrategy":
-                    population.SelectionStrategy = new StochasticUniversalSamplingStrategy(new FixedSizeStrategy(populationSize), new ThreadSafeRandomGenerator());
+                case SelectionStrategies.StochasticUniversalSamplingStrategy:
+                    population.SelectionStrategy = new StochasticUniversalSamplingStrategy(selectionSizeStrategy, new ThreadSafeRandomGenerator());
                     break;
-                case "TournamentSelectionStrategy":
-                    population.SelectionStrategy = new TournamentSelectionStrategy(new FixedSizeStrategy(populationSize), new ThreadSafeRandomGenerator());
+                case SelectionStrategies.TournamentSelectionStrategy:
+                    ISelectionSizeStrategy tournamentGroupSizeStrategy = tournamentGroupSizeCheckBox.Checked ? (ISelectionSizeStrategy)new ProportionalSizeStrategy((Double)tournamentGroupSizeSpinner.Value) : (ISelectionSizeStrategy)new FixedSizeStrategy((UInt32)tournamentGroupSizeSpinner.Value);
+                    population.SelectionStrategy = new TournamentSelectionStrategy(selectionSizeStrategy, tournamentGroupSizeStrategy, new ThreadSafeRandomGenerator());
                     break;
                 default:
                     return;
             }
-            if (eliteSpinner.Value > 0)
+
+            ISelectionSizeStrategy eliteSizeStrategy = eliteSizeCheckBox.Checked ? (ISelectionSizeStrategy)new ProportionalSizeStrategy((Double)eliteSizeSpinner.Value) : (ISelectionSizeStrategy)new FixedSizeStrategy((UInt32)eliteSizeSpinner.Value);
+            ISelectionSizeStrategy survivorSizeStrategy = eliteSizeCheckBox.Checked ? (ISelectionSizeStrategy)new ProportionalSizeStrategy((Double)survivorSizeSpinner.Value) : (ISelectionSizeStrategy)new FixedSizeStrategy((UInt32)survivorSizeSpinner.Value);
+            switch ((ModifierCombination)selecitonModifierComboBox.SelectedValue)
             {
-                population.SelectionStrategy = new EliteSelectionStrategyAdapter(population.SelectionStrategy, new FixedSizeStrategy((UInt32)eliteSpinner.Value));
+                case ModifierCombination.None:
+                    break;
+                case ModifierCombination.Elite:
+                    population.SelectionStrategy = new EliteSelectionStrategyAdapter(population.SelectionStrategy, eliteSizeStrategy);
+                    break;
+                case ModifierCombination.Survivor:
+                    population.SelectionStrategy = new SurvivorSelectionStrategyAdapter(population.SelectionStrategy, survivorSizeStrategy);
+                    break;
+                case ModifierCombination.EliteSurvivor:
+                    population.SelectionStrategy = new EliteSelectionStrategyAdapter(population.SelectionStrategy, eliteSizeStrategy);
+                    population.SelectionStrategy = new SurvivorSelectionStrategyAdapter(population.SelectionStrategy, survivorSizeStrategy);
+                    break;
+                case ModifierCombination.SurvivorElite:
+                    population.SelectionStrategy = new SurvivorSelectionStrategyAdapter(population.SelectionStrategy, survivorSizeStrategy);
+                    population.SelectionStrategy = new EliteSelectionStrategyAdapter(population.SelectionStrategy, eliteSizeStrategy);
+                    break;
             }
-            if (survivorSpinner.Value > 0)
-            {
-                population.SelectionStrategy = new SurvivorSelectionStrategyAdapter(population.SelectionStrategy, new FixedSizeStrategy((UInt32)eliteSpinner.Value));
-            }
+
+            /*
+             * Warunek stopu. Zachować referencję dla wskazania lidera.
+             */
+            stopCondition = new NoChangeStopCondion((UInt32)stopSpinner.Value);
+            population.StopCondition = stopCondition;
+
             /*
              * Rozpocznij przetwarzanie.
              */
@@ -214,85 +244,75 @@ namespace GAgui
         /// </summary>
         private void InsertData(Double[,] dane)
         {
-            Double d1;
-            string s1 = String.Empty;
-            string s2 = String.Empty;
+            StringBuilder builder = new StringBuilder();
             dataListBox.Items.Clear();
-            for (int i = 0; i < dane.GetLength(0) ; i++)
+            for (Int32 i = 0; i < dane.GetLength(0); i++)
             {
-                for (int j = 0; j < dane.GetLength(1); j++)
+                for (Int32 j = 0; j < dane.GetLength(1); j++)
                 {
-                    d1 = dane[i, j];
-                    if(d1==Double.PositiveInfinity)
-                        s2 = "INF";
+                    Double d = dane[i, j];
+                    if (Double.IsInfinity(d))
+                        builder.Append("INF");
                     else
-                        s2 = d1.ToString();
+                        builder.Append(d);
 
-                    if (String.IsNullOrEmpty(s1))
-                    {
-                        s1 = s1 + s2;
-                    }
-                    else
-                    {
-                        s1 = s1 + "; " + s2;
-                    }
+                    builder.Append('\t');
                 }
-                dataListBox.Items.Add(s1);
-                s1 = String.Empty;
+                dataListBox.Items.Add(builder.ToString());
+                builder.Clear();
             }
         }
         /// <summary>
         /// Wczytuje macierz danych z pliku.
         /// </summary>
-        private void OpenFileAndCreateMatrix(string sciezka)
+        private Double[,] LoadFile(String sciezka)
         {
-            Double d1;
-            string s1 = String.Empty;
-            string s2 = String.Empty;
-            Double INF = Double.PositiveInfinity;
-            Double[,] Matrix = null;
-            int j = 0;
-            int i = 0;
-            int MaxMatrix = 0;
-            try
+            Double[,] matrix = new Double[,] {{0}};
+            using (StreamReader stream = new StreamReader(sciezka))
             {
-                using (StreamReader sr = new StreamReader(sciezka))
+                Int32 i = 0;
+                String line;
+                while ((line = stream.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
+                    String[] tokens = line.Split(new char[] {';', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+                    if (matrix.Length == 1)
                     {
-                        s1 = line;
-                        string[] sx = s1.Split(';');
-                        if(Matrix==null)
-                        {
-                            Matrix = new Double[sx.Length,sx.Length];
-                            MaxMatrix = sx.Length;
-                        }
-                        for (int k = 0; k < MaxMatrix; k++)
-                        {
-                            s2 = sx[k];
-                            s2 = s2.Trim();
-                            if(s2.Equals("INF"))
-                            {
-                                Matrix[i,k] = INF;
-                            }else
-                            {
-                                Matrix[i, k] = Convert.ToDouble(s2);
-                            }
-                        }
-                        i++;
+                        matrix = new Double[tokens.Length, tokens.Length];
                     }
-                    sr.Close();
+                    for (Int32 k = 0; k < matrix.GetLength(0); k++)
+                    {
+                        String token = tokens[k].Trim();
+                        if (token.Equals("INF"))
+                        {
+                            matrix[i, k] = Double.PositiveInfinity;
+                        }
+                        else
+                        {
+                            matrix[i, k] = Convert.ToDouble(token);
+                        }
+                    }
+                    i++;
                 }
             }
-            catch (Exception e)
+            return matrix;
+        }
+        /// <summary>
+        /// Zapisuje macierz danych z pliku.
+        /// </summary>
+        private void SaveFile(String sciezka, Double[,] matrix)
+        {
+            using (StreamWriter stream = new StreamWriter(sciezka))
             {
-                Console.WriteLine(e.Message);
-                return;
+                for (Int32 i = 0; i < matrix.GetLength(0); ++i)
+                {
+                    for (Int32 j = 0; j < matrix.GetLength(1); ++j)
+                    {
+                        stream.Write(Double.IsInfinity(matrix[i, j]) ? "INF" : matrix[i, j].ToString());
+                        stream.Write("; ");
+                    }
+                    stream.WriteLine();
+                }
             }
-            costMatrix = null;
-            costMatrix = Matrix;
-            InsertData(costMatrix);
         }
         /// <summary>
         /// Tworzy okno dialogowe dla wczytania danych z pliku.
@@ -304,7 +324,126 @@ namespace GAgui
             DialogResult result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK) // Test result.
             {
-                OpenFileAndCreateMatrix(openFileDialog.FileName);
+                try
+                {
+                    costMatrix = LoadFile(openFileDialog.FileName);
+                    InsertData(costMatrix);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Nie można wczytać pliku z danymi: " + ex.Message);
+                }
+            }
+        }
+        /// <summary>
+        /// Tworzy okno dialogowe dla zapisania danych do pliku.
+        /// </summary>
+        private void saveDataButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            DialogResult result = saveFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    SaveFile(saveFileDialog.FileName, costMatrix);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Nie można zapisać pliku z danymi: " + ex.Message);
+                }
+            }
+        }
+        /// <summary>
+        /// Metoda pomocnicza, która modyfikuje format wprowadzanych wartości liczbowych zależnie od wybranej opcji.
+        /// </summary>
+        private void eliteSizeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Decimal value = eliteSizeSpinner.Value;
+            if (eliteSizeCheckBox.Checked)
+            {
+                eliteSizeSpinner.Maximum = 1.0M;
+                eliteSizeSpinner.DecimalPlaces = 4;
+                eliteSizeSpinner.Value = value / 1000;
+            }
+            else
+            {
+                eliteSizeSpinner.Maximum = 1000;
+                eliteSizeSpinner.DecimalPlaces = 0;
+                eliteSizeSpinner.Value = value * 1000;
+            }
+        }
+        /// <summary>
+        /// Metoda pomocnicza, która modyfikuje format wprowadzanych wartości liczbowych zależnie od wybranej opcji.
+        /// </summary>
+        private void survivorSizeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Decimal value = eliteSizeSpinner.Value;
+            if (survivorSizeCheckBox.Checked)
+            {
+                survivorSizeSpinner.Maximum = 1.0M;
+                survivorSizeSpinner.DecimalPlaces = 4;
+                survivorSizeSpinner.Value = value / 1000;
+            }
+            else
+            {
+                survivorSizeSpinner.Maximum = 1000;
+                survivorSizeSpinner.DecimalPlaces = 0;
+                survivorSizeSpinner.Value = value * 1000;
+            }
+        }
+        /// <summary>
+        /// Metoda pomocnicza, która modyfikuje format wprowadzanych wartości liczbowych zależnie od wybranej opcji.
+        /// </summary>
+        private void selectionSizeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Decimal value = selectionSizeSpinner.Value;
+            if (selectionSizeCheckBox.Checked)
+            {
+                selectionSizeSpinner.Maximum = 1.0M;
+                selectionSizeSpinner.DecimalPlaces = 4;
+                selectionSizeSpinner.Value = value / 1000;
+            }
+            else
+            {
+                selectionSizeSpinner.Maximum = 1000;
+                selectionSizeSpinner.DecimalPlaces = 0;
+                selectionSizeSpinner.Value = value * 1000;
+            }
+        }
+        /// <summary>
+        /// Metoda pomocnicza, która modyfikuje format wprowadzanych wartości liczbowych zależnie od wybranej opcji.
+        /// </summary>
+        private void tournamentGroupSizeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Decimal value = tournamentGroupSizeSpinner.Value;
+            if (tournamentGroupSizeCheckBox.Checked)
+            {
+                tournamentGroupSizeSpinner.Maximum = 1.0M;
+                tournamentGroupSizeSpinner.DecimalPlaces = 4;
+                tournamentGroupSizeSpinner.Value = value / 1000;
+            }
+            else
+            {
+                tournamentGroupSizeSpinner.Maximum = 1000;
+                tournamentGroupSizeSpinner.DecimalPlaces = 0;
+                tournamentGroupSizeSpinner.Value = value * 1000;
+            }
+        }
+        /// <summary>
+        /// Metoda pomocnicza, która ukrywa/pokazuje opcje dla selekcji turniejowe, zależnie od wybranej metody selekcji..
+        /// </summary>
+        private void selectionAlgorithmComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectionStrategies strategy = (SelectionStrategies)selectionAlgorithmComboBox.SelectedValue;
+            if (strategy == SelectionStrategies.TournamentSelectionStrategy)
+            {
+                selectionTournamentGroupBox.Visible = true;
+            }
+            else
+            {
+                selectionTournamentGroupBox.Visible = false;
             }
         }
     }
