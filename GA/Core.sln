@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACore", "Core\GACore.csproj", "{2EE0AD19-E904-4600-BD24-08D62A3E290A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAgui", "GAgui\GAgui.csproj", "{44FB590C-C4D0-45C6-94E0-073EDED3ED03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAGUI", "GUI\GAGUI.csproj", "{44FB590C-C4D0-45C6-94E0-073EDED3ED03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
